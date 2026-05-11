@@ -22,3 +22,6 @@ jobs:
 
       - name: Build with Maven
         run: mvn clean package -DskipTests
+
+      - name: Run project
+        run: timeout 30s mvn spring-boot:run
