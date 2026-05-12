@@ -85,6 +85,16 @@
 								+ rows[i].author
 								+ '</a> &nbsp;&nbsp; '
 								+ rows[i].gtmModified + '</p>';
+							if (rows[i].tags != null && rows[i].tags != '') {
+    						var tags = rows[i].tags.split(',');
+							htmlText += '<p class="post-tags">';
+							for (var j = 0; j < tags.length; j++) {
+								htmlText += '<span class="label label-info" style="margin-right: 6px;">'
+									+ tags[j]
+									+ '</span>';
+							}
+							htmlText += '</p>';
+						}
 							htmlText += '</div>';
 							htmlText += '<hr>';
 						}
