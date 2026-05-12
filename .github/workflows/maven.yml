@@ -10,26 +10,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    services:
-      mysql:
-        image: mysql:5.7
-        env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: bootdo
-        ports:
-          - 3306:3306
-        options: >-
-
-          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -proot"
-
-          --health-interval=10s
-
-          --health-timeout=5s
-
-          --health-retries=5
-
-        command: --lower_case_table_names=1
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -39,27 +19,43 @@ jobs:
         with:
           java-version: '8'
           distribution: 'temurin'
+
+      - name: Start MySQL
+        run: |
+          docker run -d \
+            --name mysql \
+            -e MYSQL_ROOT_PASSWORD=root \
+            -e MYSQL_DATABASE=bootdo \
+            -p 3306:3306 \
+            mysql:5.7 \
+            --lower_case_table_names=1
+
       - name: Check MySQL
         run: |
-          sleep 20
+          sleep 25
+          mysql -h 127.0.0.1 -uroot -proot -e "SHOW VARIABLES LIKE 'lower_case_table_names';"
           mysql -h 127.0.0.1 -uroot -proot -e "SHOW DATABASES;"
 
-
       - name: Set MySQL sql_mode
-        run: mysql -h 127.0.0.1 -uroot -proot -e "SET GLOBAL sql_mode='';"
-      - name: Import SQL
-        run: mysql -h 127.0.0.1 -uroot -proot bootdo < bootdo.sql
+        run: |
+          mysql -h 127.0.0.1 -uroot -proot -e "SET GLOBAL sql_mode='';"
 
+      - name: Import SQL
+        run: |
+          mysql -h 127.0.0.1 -uroot -proot bootdo < bootdo.sql
 
       - name: Update database password for CI
         run: |
-              sed -i 's/password:.*/password: root/' src/main/resources/application-dev.yml
+          sed -i 's/password:.*/password: root/' src/main/resources/application-dev.yml
+
       - name: Disable MySQL SSL for CI
         run: |
           sed -i 's/characterEncoding=utf8/characterEncoding=utf8\&useSSL=false/' src/main/resources/application-dev.yml
 
       - name: Build with Maven
-        run: mvn clean package -DskipTests
+        run: |
+          mvn clean package -DskipTests
 
       - name: Run project
-        run: timeout 40s mvn spring-boot:run -Dspring-boot.run.arguments="--spring.activiti.database-schema-update=false" || true
+        run: |
+          timeout 40s mvn spring-boot:run -Dspring-boot.run.arguments="--spring.activiti.database-schema-update=false" || true
