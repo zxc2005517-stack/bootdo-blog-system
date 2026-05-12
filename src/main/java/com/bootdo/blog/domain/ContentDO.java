@@ -36,6 +36,8 @@ public class ContentDO implements Serializable {
 	//
 	private Integer hits;
 	//评论数量
+	private Integer likes;
+	//点赞数量
 	private Integer commentsNum;
 	//开启评论
 	private Integer allowComment;
@@ -175,6 +177,13 @@ public class ContentDO implements Serializable {
 	/**
 	 * 设置：评论数量
 	 */
+	public Integer getLikes() {
+    return likes;
+	}
+
+	public void setLikes(Integer likes) {
+    this.likes = likes;
+	}
 	public void setCommentsNum(Integer commentsNum) {
 		this.commentsNum = commentsNum;
 	}
