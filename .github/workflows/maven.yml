@@ -32,9 +32,15 @@ jobs:
         run: |
           sleep 20
           mysql -h 127.0.0.1 -uroot -proot -e "SHOW DATABASES;"
+      - name: Import SQL
+        run: mysql -h 127.0.0.1 -uroot -proot bootdo < bootdo.sql
 
+
+      - name: Update database password for CI
+        run: |
+          sed -i 's/password:$/password: root/' src/main/resources/application-dev.yml
       - name: Build with Maven
         run: mvn clean package -DskipTests
 
-      - name: Wait for MySQL
-        run: sleep 20
+      - name: Run project
+        run: timeout 40s mvn spring-boot:run
