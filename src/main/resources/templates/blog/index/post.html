@@ -13,9 +13,26 @@
 					<div class="post-heading">
 						<h1 th:text="${bContent.title}"></h1>
 						<span class="meta">作者 <a href="#"
+
 							th:text="${bContent.author}"></a>&nbsp;&nbsp;<a href="#"
+
 							th:text="${gtmModified}"></a>
+
 						</span>
+
+						<p class="post-tags" th:if="${bContent.tags != null and bContent.tags != ''}" style="margin-top: 15px;">
+
+							<span class="label label-info"
+
+								style="margin-right: 6px;"
+
+								th:each="tag : ${#strings.arraySplit(bContent.tags, ',')}"
+
+								th:text="${tag}">
+
+							</span>
+
+						</p>
 					</div>
 				</div>
 			</div>
