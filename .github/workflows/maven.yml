@@ -46,6 +46,13 @@ jobs:
       - name: Disable MySQL SSL for CI
         run: |
           sed -i 's/characterEncoding=utf8/characterEncoding=utf8\&useSSL=false/' src/main/resources/application-dev.yml
+      - name: Disable Activiti schema update
+        run: |
+          echo '
+          spring:
+            activiti:
+              database-schema-update: false
+          ' >> src/main/resources/application-dev.yml
       - name: Build with Maven
         run: mvn clean package -DskipTests
 
