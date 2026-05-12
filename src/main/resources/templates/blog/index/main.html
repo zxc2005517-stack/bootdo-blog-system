@@ -22,6 +22,12 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+				<div class="input-group" style="margin-bottom: 25px;">
+    			<input type="text" id="keyword" class="form-control" placeholder="请输入文章关键词">
+    			<span class="input-group-btn">
+        		<button class="btn btn-primary" id="searchBtn" type="button">搜索</button>
+    			</span>
+				</div>
 				<div id="incomeNum"></div>
 				<div class="clearfix">
 					<p id="flagLoaded" style="display: none; text-align: center;">已全部加载</p>
@@ -39,7 +45,20 @@
 		var total;
 		$(function(){
 			bindList(0);
+			$("#searchBtn").click(function () {
+    		currentPage = 0;
+    		total = 0;
+    		$("#incomeNum").empty();
+    		$("#flagLoaded").hide();
+    		$("#flagLoad").hide();
+    		bindList(0);
+			});
+			$("#keyword").keydown(function (event) {
+						if (event.keyCode == 13) {
+						$("#searchBtn").click();
+			}
 
+});
 		});
 
 		function nextPage() {
@@ -48,7 +67,7 @@
 		function bindList(offset) {
 			$
 				.ajax({
-					url : 'blog/open/list?type=article&limit=10&offset=' + offset,
+					url : 'blog/open/list?type=article&limit=10&offset=' + offset + '&keyword=' + encodeURIComponent($("#keyword").val() || ''),
 					method : 'get',
 					dataType : 'json',
 					success : function(data) {
@@ -68,6 +87,9 @@
 								+ rows[i].gtmModified + '</p>';
 							htmlText += '</div>';
 							htmlText += '<hr>';
+						}
+						if (rows.length == 0 && offset == 0) {
+   						 htmlText = '<p class="text-center text-muted">没有找到相关文章</p>';
 						}
 						$("#incomeNum").append(htmlText);
 						document.getElementById("flagLoad").style.display = "block";
