@@ -90,17 +90,13 @@
 							htmlText += '</h2>';
 							htmlText += '</a>';
 							htmlText += '<p class="post-meta">作者：<a href="#">'
-
 							+ rows[i].author
-
 							+ '</a> &nbsp;&nbsp; '
-
 							+ rows[i].gtmModified
-
 							+ ' &nbsp;&nbsp; 阅读量：'
-
 							+ (rows[i].hits == null ? 0 : rows[i].hits)
-
+							+ ' &nbsp;&nbsp; 点赞数：'
+							+ (rows[i].likes == null ? 0 : rows[i].likes)
 							+ '</p>';
 							if (rows[i].tags != null && rows[i].tags != '') {
     						var tags = rows[i].tags.split(',');
