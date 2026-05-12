@@ -58,4 +58,4 @@ jobs:
 
       - name: Run project
         run: |
-          timeout 120s mvn spring-boot:run -Dspring-boot.run.arguments="--spring.activiti.database-schema-update=false" || true
+          timeout 120s mvn spring-boot:run -Dspring-boot.run.arguments="--server.port=8080 --spring.activiti.database-schema-update=false" || true
