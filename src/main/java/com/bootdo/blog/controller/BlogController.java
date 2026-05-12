@@ -53,6 +53,30 @@ public class BlogController {
 			model.addAttribute("gtmModified", DateUtils.format(bContentDO.getGtmModified()));
 			return "blog/index/post";
 		}
+	@ResponseBody
+	@PostMapping("/open/post/{cid}/like")
+	public Map<String, Object> like(@PathVariable("cid") Long cid) {
+		Map<String, Object> result = new HashMap<>(16);
+
+		ContentDO content = bContentService.get(cid);
+		if (content == null) {
+			result.put("code", 1);
+			result.put("msg", "文章不存在");
+			return result;
+		}
+
+		Integer likes = content.getLikes();
+		if (likes == null) {
+			likes = 0;
+		}
+
+		content.setLikes(likes + 1);
+		bContentService.update(content);
+
+		result.put("code", 0);
+		result.put("likes", content.getLikes());
+		return result;
+	}
 	@GetMapping("/open/page/{categories}")
 	String about(@PathVariable("categories") String categories, Model model) {
 		Map<String, Object> map = new HashMap<>(16);
