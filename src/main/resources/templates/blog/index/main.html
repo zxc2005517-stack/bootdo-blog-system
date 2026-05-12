@@ -28,6 +28,13 @@
         		<button class="btn btn-primary" id="searchBtn" type="button">搜索</button>
     			</span>
 				</div>
+					<div class="panel panel-default" style="margin-bottom: 25px;">
+					<div class="panel-heading">
+						<strong>热门文章排行</strong>
+					</div>
+					<ul class="list-group" id="hotArticleList">
+					</ul>
+					</div>
 				<div id="incomeNum"></div>
 				<div class="clearfix">
 					<p id="flagLoaded" style="display: none; text-align: center;">已全部加载</p>
@@ -45,6 +52,7 @@
 		var total;
 		$(function(){
 			bindList(0);
+			bindHotArticles();
 			$("#searchBtn").click(function () {
     		currentPage = 0;
     		total = 0;
@@ -120,6 +128,32 @@
 					}
 				});
 		}
+		function bindHotArticles() {
+    $.ajax({
+        url: 'blog/open/list?type=article&limit=5&offset=0&sort=hits&order=desc',
+        method: 'get',
+        dataType: 'json',
+        success: function(data) {
+            var rows = data.rows;
+            var htmlText = "";
+
+            if (rows.length == 0) {
+                htmlText = '<li class="list-group-item text-muted">暂无热门文章</li>';
+            }
+
+            for (var i = 0; i < rows.length; i++) {
+                htmlText += '<li class="list-group-item">';
+                htmlText += '<span class="badge">' + (rows[i].hits == null ? 0 : rows[i].hits) + ' 阅读</span>';
+                htmlText += '<a href="/blog/open/post/' + rows[i].cid + '">';
+                htmlText += (i + 1) + '. ' + rows[i].title;
+                htmlText += '</a>';
+                htmlText += '</li>';
+            }
+
+            $("#hotArticleList").html(htmlText);
+        }
+    });
+}
 	</script>
 
 
