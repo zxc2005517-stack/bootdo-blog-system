@@ -20,17 +20,15 @@ jobs:
           - 3306:3306
         options: >-
 
-          --name mysql
-
           --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -proot"
 
-          --health-interval=10s
+           --health-interval=10s
 
-          --health-timeout=5s
+            --health-timeout=5s
 
-          --health-retries=5
+            --health-retries=5
 
-          --lower-case-table-names=1
+            --lower-case-table-names=1
 
     steps:
       - name: Checkout code
