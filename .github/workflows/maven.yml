@@ -42,7 +42,7 @@ jobs:
 
       - name: Update database password for CI
         run: |
-          sed -i 's/password:$/password: root/' src/main/resources/application-dev.yml
+              sed -i 's/password:.*/password: root/' src/main/resources/application-dev.yml
       - name: Disable MySQL SSL for CI
         run: |
           sed -i 's/characterEncoding=utf8/characterEncoding=utf8\&useSSL=false/' src/main/resources/application-dev.yml
