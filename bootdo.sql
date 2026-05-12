@@ -730,6 +730,7 @@ CREATE TABLE `blog_content` (
   `tags` varchar(200) DEFAULT NULL COMMENT '标签',
   `categories` varchar(200) DEFAULT NULL COMMENT '分类',
   `hits` int(5) DEFAULT NULL,
+  `likes` int DEFAULT '0' COMMENT '点赞数',
   `comments_num` int(5) DEFAULT '0' COMMENT '评论数量',
   `allow_comment` int(1) DEFAULT '0' COMMENT '开启评论',
   `allow_ping` int(1) DEFAULT '0' COMMENT '允许ping',
