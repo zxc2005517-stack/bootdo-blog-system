@@ -39,12 +39,20 @@ public class BlogController {
 	}
 
 	@GetMapping("/open/post/{cid}")
-	String post(@PathVariable("cid") Long cid, Model model) {
-		ContentDO bContentDO = bContentService.get(cid);
-		model.addAttribute("bContent", bContentDO);
-		model.addAttribute("gtmModified", DateUtils.format(bContentDO.getGtmModified()));
-		return "blog/index/post";
-	}
+		String post(@PathVariable("cid") Long cid, Model model) {
+			ContentDO bContentDO = bContentService.get(cid);
+
+			Integer hits = bContentDO.getHits();
+			if (hits == null) {
+				hits = 0;
+			}
+			bContentDO.setHits(hits + 1);
+			bContentService.update(bContentDO);
+
+			model.addAttribute("bContent", bContentDO);
+			model.addAttribute("gtmModified", DateUtils.format(bContentDO.getGtmModified()));
+			return "blog/index/post";
+		}
 	@GetMapping("/open/page/{categories}")
 	String about(@PathVariable("categories") String categories, Model model) {
 		Map<String, Object> map = new HashMap<>(16);
