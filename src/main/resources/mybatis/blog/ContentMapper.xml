@@ -12,6 +12,7 @@
         <where>  
 		  		  <if test="cid != null and cid != ''"> and cid = #{cid} </if>
 		  		  <if test="title != null and title != ''"> and title = #{title} </if>
+				  <if test="keyword != null and keyword != ''">and (title like concat('%', #{keyword}, '%') or content like concat('%', #{keyword}, '%'))</if>
 		  		  <if test="slug != null and slug != ''"> and slug = #{slug} </if>
 		  		  <if test="created != null and created != ''"> and created = #{created} </if>
 		  		  <if test="modified != null and modified != ''"> and modified = #{modified} </if>
@@ -47,6 +48,7 @@
 		 <where>  
 		  		  <if test="cid != null and cid != ''"> and cid = #{cid} </if>
 		  		  <if test="title != null and title != ''"> and title = #{title} </if>
+				  <if test="keyword != null and keyword != ''">and (title like concat('%', #{keyword}, '%') or content like concat('%', #{keyword}, '%'))</if>
 		  		  <if test="slug != null and slug != ''"> and slug = #{slug} </if>
 		  		  <if test="created != null and created != ''"> and created = #{created} </if>
 		  		  <if test="modified != null and modified != ''"> and modified = #{modified} </if>
